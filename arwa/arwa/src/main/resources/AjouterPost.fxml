@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            style="-fx-background-color: linear-gradient(to bottom, #f8f4e1, #e3f2fd);"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.AjouterPostController">
+
+    <children>
+        <VBox alignment="CENTER" spacing="20" layoutX="50" layoutY="50" style="-fx-padding: 20;">
+            <Text text="Ajouter un Post" style="-fx-fill: #0d47a1; -fx-font-weight: bold;">
+                <font>
+                    <Font name="Segoe UI Semibold" size="28.0"/>
+                </font>
+            </Text>
+
+            <GridPane hgap="20" vgap="15" style="-fx-padding: 20;">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+                    <ColumnConstraints prefWidth="300"/>
+                </columnConstraints>
+
+                <Label text="Contenu:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+                <TextField fx:id="contentTextField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+                <Label text="Image URL:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+                <TextField fx:id="imageTextField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+            </GridPane>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20;">
+                <Button fx:id="cancelButton" text="Annuler" onAction="#handleCancelAction"
+                        style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5; -fx-pref-width: 100;"/>
+                <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSaveAction"
+                        style="-fx-background-color: #4caf50; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5; -fx-pref-width: 100;"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

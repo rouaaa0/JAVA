@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0"
+            style="-fx-background-color: linear-gradient(to bottom, #f8f4e1, #e3f2fd);"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.DetailBlogController">
+
+    <children>
+        <!-- Header Section -->
+        <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #bbdefb; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <Button fx:id="closeButton" onAction="#handleCloseButtonAction"
+                    style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <graphic>
+                    <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                        <image>
+                            <Image url="@image/close_icon.png"/> <!-- Ensure this image exists -->
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Text text="📝 Détails du Blog" style="-fx-fill: #0d47a1; -fx-font-weight: bold;">
+                <font>
+                    <Font name="Segoe UI Semibold" size="28.0"/>
+                </font>
+            </Text>
+        </HBox>
+
+        <!-- Main Content Section -->
+        <VBox spacing="20" layoutX="50" layoutY="100" style="-fx-padding: 20; -fx-background-color: #ffffff; -fx-border-color: #bbdefb; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <GridPane hgap="20" vgap="20">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+                    <ColumnConstraints prefWidth="300"/>
+                </columnConstraints>
+
+                <!-- Title -->
+                <Label text="Titre:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+                <TextField fx:id="blogTitleText" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+                <!-- Description -->
+                <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+                <TextArea fx:id="blogDescriptionText" editable="false" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+                <!-- Created At -->
+                <Label text="Créé le:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+                <Label fx:id="createdAtLabel" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-text-fill: #4c8bf5;"/>
+
+                <!-- Updated At -->
+                <Label text="Mis à jour le:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+                <Label fx:id="updatedAtLabel" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-text-fill: #4c8bf5;"/>
+            </GridPane>
+
+            <!-- Footer Section with Close Button -->
+            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                <Button text="Fermer" fx:id="closeButton" onAction="#handleCloseButtonAction"
+                        style="-fx-background-color: linear-gradient(to right, #397163, #4caf50); -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5; -fx-pref-width: 100;"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

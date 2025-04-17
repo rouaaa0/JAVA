@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.DetailPostController"
+            style="-fx-background-color: linear-gradient(to bottom, #e3f2fd, #fefbe9);">
+
+    <children>
+        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30;">
+            <!-- Title -->
+            <Text text="Détails du Post" style="-fx-fill: #003366; -fx-font-weight: bold;">
+                <font>
+                    <Font name="Segoe UI Bold" size="24.0"/>
+                </font>
+            </Text>
+
+            <!-- Grid for Details -->
+            <GridPane hgap="20" vgap="15" style="-fx-padding: 20;">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" prefWidth="150"/>
+                    <ColumnConstraints prefWidth="300"/>
+                </columnConstraints>
+
+                <Label text="Contenu:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       style="-fx-font-size: 14px; -fx-text-fill: #003366; -fx-font-weight: bold;"/>
+                <Label fx:id="contentLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5; -fx-padding: 5;"/>
+
+                <Label text="Image URL:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       style="-fx-font-size: 14px; -fx-text-fill: #003366; -fx-font-weight: bold;"/>
+                <Hyperlink fx:id="imageLink" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                           style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5; -fx-padding: 5;"/>
+
+                <Label text="Créé le:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                       style="-fx-font-size: 14px; -fx-text-fill: #003366; -fx-font-weight: bold;"/>
+                <Label fx:id="createdAtLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5; -fx-padding: 5;"/>
+
+                <Label text="Mis à jour le:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                       style="-fx-font-size: 14px; -fx-text-fill: #003366; -fx-font-weight: bold;"/>
+                <Label fx:id="updatedAtLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5; -fx-padding: 5;"/>
+            </GridPane>
+
+            <!-- Close Button -->
+            <Button text="Fermer" onAction="#handleCloseAction"
+                    style="-fx-background-color: #d32f2f; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 15; -fx-pref-width: 100;"/>
+        </VBox>
+    </children>
+</AnchorPane>

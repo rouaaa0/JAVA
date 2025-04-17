@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterBlogController">
+   <children>
+      <!-- Title Field -->
+      <Label layoutX="33.0" layoutY="57.0" text="Title" />
+      <TextField fx:id="TitleTextField" layoutX="233.0" layoutY="53.0" />
+      <Label fx:id="TitleErrorLabel" layoutX="233.0" layoutY="83.0" textFill="red" />
+
+      <!-- Description Field -->
+      <Label layoutX="33.0" layoutY="136.0" text="Description" />
+      <TextField fx:id="DescriptionTextField" layoutX="233.0" layoutY="132.0" />
+      <Label fx:id="DescriptionErrorLabel" layoutX="233.0" layoutY="162.0" textFill="red" />
+
+      <!-- Created At -->
+      <Label layoutX="33.0" layoutY="204.0" text="Created At" />
+      <DatePicker fx:id="CreatedAtBlogPicker" layoutX="233.0" layoutY="200.0" />
+
+      <!-- Updated At -->
+      <Label layoutX="33.0" layoutY="282.0" text="Updated At" />
+      <DatePicker fx:id="UpdatedAtBlogPicker" layoutX="233.0" layoutY="278.0" />
+
+      <!-- Ajouter Button -->
+      <Button fx:id="AjouterButton" layoutX="510.0" layoutY="336.0" mnemonicParsing="false" onAction="#ajouterAction" text="Ajouter" />
+   </children>
+</AnchorPane>
