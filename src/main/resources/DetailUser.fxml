@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0"
+            style="-fx-background-color: linear-gradient(to bottom, #f8f4e1, #e3f2fd);"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.DetailUserController">
+
+   <children>
+      <!-- Header with Back Button -->
+      <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #bbdefb; -fx-border-radius: 10; -fx-background-radius: 10;">
+         <Button onAction="#handleBackAction"
+                 style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <graphic>
+               <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                  <image>
+                     <Image url="@image/122637.png"/>
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
+
+         <Text text="👤 Détails de l'utilisateur" style="-fx-fill: #0d47a1; -fx-font-weight: bold;">
+            <font>
+               <Font name="Segoe UI Semibold" size="28.0"/>
+            </font>
+         </Text>
+      </HBox>
+
+      <!-- User Details Form -->
+      <VBox spacing="20" layoutX="50" layoutY="100" style="-fx-padding: 20; -fx-background-color: #ffffff; -fx-border-color: #bbdefb; -fx-border-radius: 10; -fx-background-radius: 10;">
+         <GridPane hgap="20" vgap="20">
+            <columnConstraints>
+               <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+               <ColumnConstraints prefWidth="300"/>
+            </columnConstraints>
+
+            <!-- Name -->
+            <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <TextField fx:id="nameField" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+            <!-- Lastname -->
+            <Label text="Prénom:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <TextField fx:id="lastnameField" editable="false" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+            <!-- Email -->
+            <Label text="Email:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <TextField fx:id="emailField" editable="false" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+            <!-- Role -->
+            <Label text="Rôle:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <Label fx:id="roleLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                   style="-fx-font-size: 14px; -fx-text-fill: #4c8bf5;"/>
+
+            <!-- Profile Picture -->
+            <Label text="Photo:" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
+               <ImageView fx:id="profileImage" fitHeight="80" fitWidth="80" preserveRatio="true"
+                          style="-fx-border-color: #bbdefb; -fx-border-width: 2; -fx-border-radius: 5;"/>
+               <TextField fx:id="profilePathField" editable="false"
+                          style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+            </HBox>
+         </GridPane>
+
+         <!-- Action Buttons -->
+         <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+            <Button text="Fermer" onAction="#handleBackAction"
+                    style="-fx-background-color: linear-gradient(to right, #397163, #4caf50); -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5; -fx-pref-width: 100;"/>
+         </HBox>
+      </VBox>
+   </children>
+</AnchorPane>

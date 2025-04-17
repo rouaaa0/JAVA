@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.ModifierUserController"
+            style="-fx-background-color: linear-gradient(to bottom, #f8f4e1, #e3f2fd);">
+
+    <VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #ffffff; -fx-border-color: #bbdefb; -fx-border-radius: 10; -fx-background-radius: 10;">
+        <Text text="Modifier Utilisateur" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #0d47a1;"/>
+
+        <GridPane hgap="15" vgap="15" style="-fx-padding: 10;">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="120" halignment="RIGHT"/>
+                <ColumnConstraints prefWidth="300"/>
+            </columnConstraints>
+
+            <!-- Name -->
+            <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <TextField fx:id="nameField" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+            <!-- Lastname -->
+            <Label text="Prénom:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <TextField fx:id="lastnameField" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+            <!-- Email -->
+            <Label text="Email:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <TextField fx:id="emailField" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+            <!-- Role -->
+            <Label text="Rôle:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <ComboBox fx:id="roleCombo" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                      style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+
+            <!-- Profile Picture -->
+            <Label text="Photo:" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #0d47a1; -fx-font-weight: bold;"/>
+            <TextField fx:id="profilePathField" GridPane.rowIndex="4" GridPane.columnIndex="1"
+                       style="-fx-background-color: #f9f9f9; -fx-border-color: #bbdefb; -fx-border-radius: 5;"/>
+        </GridPane>
+
+        <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+            <Button text="Annuler" onAction="#handleCancel"
+                    style="-fx-background-color: linear-gradient(to right, #f44336, #e57373); -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5; -fx-pref-width: 100;"/>
+            <Button text="Enregistrer" onAction="#handleSave"
+                    style="-fx-background-color: linear-gradient(to right, #4CAF50, #66BB6A); -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5; -fx-pref-width: 120;"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

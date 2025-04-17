@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.AfficherUserController"
+            style="-fx-background-color: linear-gradient(to bottom, #e3f2fd, #ffffff); -fx-padding: 20;">
+
+    <children>
+        <!-- Header Section -->
+        <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #bbdefb; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <Button fx:id="btnLogout" onAction="#handleLogout"
+                    style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <graphic>
+                    <ImageView fitHeight="40" fitWidth="40" preserveRatio="true">
+                        <image>
+                            <Image url="@image/4400828.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Text text="Liste Des Utilisateurs" style="-fx-fill: #0d47a1; -fx-font-weight: bold;">
+                <font>
+                    <Font name="Arial Rounded MT Bold" size="32.0"/>
+                </font>
+            </Text>
+        </HBox>
+
+        <!-- Action Buttons -->
+        <HBox spacing="15" alignment="CENTER_RIGHT" layoutX="400" layoutY="80"
+              style="-fx-padding: 10; -fx-background-color: #e3f2fd; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <Button fx:id="modifierPasswordButton" text="🔒 Modifier Mot de Passe"
+                    style="-fx-background-color: linear-gradient(to right, #64b5f6, #bbdefb);
+                           -fx-text-fill: #0d47a1; -fx-font-weight: bold;
+                           -fx-background-radius: 25; -fx-pref-width: 220;"/>
+
+            <Button fx:id="addButton" text="➕ Ajouter Un Utilisateur" onAction="#handleAddButtonAction"
+                    style="-fx-background-color: linear-gradient(to right, #2193b0, #6dd5ed);
+                           -fx-text-fill: white; -fx-font-weight: bold;
+                           -fx-background-radius: 25; -fx-pref-width: 220;"/>
+        </HBox>
+
+        <!-- User Cards Grid -->
+        <ScrollPane fx:id="scrollPane" layoutY="140" fitToWidth="true"
+                    style="-fx-background-color: transparent; -fx-padding: 10;">
+            <content>
+                <GridPane fx:id="userGrid" hgap="25" vgap="25" style="-fx-padding: 10;">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250" maxWidth="300"/>
+                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250" maxWidth="300"/>
+                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250" maxWidth="300"/>
+                    </columnConstraints>
+                </GridPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>
