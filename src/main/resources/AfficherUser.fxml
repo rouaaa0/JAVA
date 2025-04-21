@@ -5,59 +5,83 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="700.0" prefWidth="900.0"
-            xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.AfficherUserController"
-            style="-fx-background-color: linear-gradient(to bottom, #e3f2fd, #ffffff); -fx-padding: 20;">
-
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controllers.AfficherUserController"
+            prefWidth="900" prefHeight="600" style="-fx-background-color: beige;">
     <children>
-        <!-- Header Section -->
-        <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #bbdefb; -fx-border-radius: 10; -fx-background-radius: 10;">
-            <Button fx:id="btnLogout" onAction="#handleLogout"
-                    style="-fx-background-color: transparent; -fx-border-color: transparent;">
-                <graphic>
-                    <ImageView fitHeight="40" fitWidth="40" preserveRatio="true">
-                        <image>
-                            <Image url="@image/4400828.png"/>
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
+        <!-- Title Section -->
+        <Text text="User Management"
+              layoutX="300" layoutY="40"
+              style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-fill: #004AAD;"/>
 
-            <Text text="Liste Des Utilisateurs" style="-fx-fill: #0d47a1; -fx-font-weight: bold;">
-                <font>
-                    <Font name="Arial Rounded MT Bold" size="32.0"/>
-                </font>
-            </Text>
+        <!-- Main Content Section -->
+        <HBox layoutX="20" layoutY="80" spacing="40" alignment="CENTER">
+            <children>
+                <!-- Form Section -->
+                <VBox spacing="15"
+                      style="-fx-background-color: #E8F0FE; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #004AAD; -fx-border-width: 2;"
+                      prefWidth="300">
+                    <children>
+                        <!-- Name -->
+                        <Label text="Name" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <TextField fx:id="nameField" promptText="Enter Name" style="-fx-background-color: white;"/>
+                        <Label fx:id="nameErrorLabel" text="" style="-fx-text-fill: red;"/>
+
+                        <!-- Lastname -->
+                        <Label text="Lastname" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <TextField fx:id="lastnameField" promptText="Enter Lastname" style="-fx-background-color: white;"/>
+                        <Label fx:id="lastnameErrorLabel" text="" style="-fx-text-fill: red;"/>
+
+                        <!-- Email -->
+                        <Label text="Email" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <TextField fx:id="emailField" promptText="Enter Email" style="-fx-background-color: white;"/>
+                        <Label fx:id="emailErrorLabel" text="" style="-fx-text-fill: red;"/>
+
+                        <!-- Role -->
+                        <Label text="Role" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <ComboBox fx:id="roleComboBox" promptText="Select Role" style="-fx-background-color: white;"/>
+                        <Label fx:id="roleErrorLabel" text="" style="-fx-text-fill: red;"/>
+
+                        <!-- Password -->
+                        <Label text="Password" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <PasswordField fx:id="passwordField" promptText="Enter Password" style="-fx-background-color: white;"/>
+                        <Label fx:id="passwordErrorLabel" text="" style="-fx-text-fill: red;"/>
+
+                        <!-- Profile Picture Section -->
+                        <Label text="Profile Picture" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <ImageView fx:id="profilePicturePreview"
+                                   fitWidth="50" fitHeight="50"
+                                   style="-fx-border-color: #004AAD; -fx-border-width: 2; -fx-border-radius: 5;"/>
+                        <Button text="Upload Picture"
+                                onAction="#handleProfilePictureUpload"
+                                style="-fx-background-color: #004AAD; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                        <!-- Buttons Section -->
+                        <HBox spacing="15" alignment="CENTER">
+                            <Button fx:id="addButton" text="Add"
+                                    onAction="#handleAddAction"
+                                    style="-fx-background-color: #004AAD; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 20;"
+                                    prefWidth="100"/>
+
+                            <Button fx:id="updateButton" text="Update"
+                                    onAction="#handleUpdateAction"
+                                    style="-fx-background-color: #004AAD; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 20;"
+                                    prefWidth="100"/>
+
+                            <Button fx:id="deleteButton" text="Delete"
+                                    onAction="#handleDeleteAction"
+                                    style="-fx-background-color: #004AAD; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 20;"
+                                    prefWidth="100"/>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- Card Section -->
+                <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-padding: 10; -fx-border-color: #004AAD; -fx-border-width: 2;">
+                    <content>
+                        <FlowPane fx:id="cardContainer" hgap="15" vgap="15" style="-fx-padding: 10;"/>
+                    </content>
+                </ScrollPane>
+            </children>
         </HBox>
-
-        <!-- Action Buttons -->
-        <HBox spacing="15" alignment="CENTER_RIGHT" layoutX="400" layoutY="80"
-              style="-fx-padding: 10; -fx-background-color: #e3f2fd; -fx-border-radius: 10; -fx-background-radius: 10;">
-            <Button fx:id="modifierPasswordButton" text="🔒 Modifier Mot de Passe"
-                    style="-fx-background-color: linear-gradient(to right, #64b5f6, #bbdefb);
-                           -fx-text-fill: #0d47a1; -fx-font-weight: bold;
-                           -fx-background-radius: 25; -fx-pref-width: 220;"/>
-
-            <Button fx:id="addButton" text="➕ Ajouter Un Utilisateur" onAction="#handleAddButtonAction"
-                    style="-fx-background-color: linear-gradient(to right, #2193b0, #6dd5ed);
-                           -fx-text-fill: white; -fx-font-weight: bold;
-                           -fx-background-radius: 25; -fx-pref-width: 220;"/>
-        </HBox>
-
-        <!-- User Cards Grid -->
-        <ScrollPane fx:id="scrollPane" layoutY="140" fitToWidth="true"
-                    style="-fx-background-color: transparent; -fx-padding: 10;">
-            <content>
-                <GridPane fx:id="userGrid" hgap="25" vgap="25" style="-fx-padding: 10;">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250" maxWidth="300"/>
-                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250" maxWidth="300"/>
-                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250" maxWidth="300"/>
-                    </columnConstraints>
-                </GridPane>
-            </content>
-        </ScrollPane>
     </children>
 </AnchorPane>

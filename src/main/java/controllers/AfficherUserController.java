@@ -1,182 +1,367 @@
 package controllers;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 import models.User;
 import service.UserService;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-import java.io.IOException;
+import java.io.File;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
 
 public class AfficherUserController {
 
-    @FXML private GridPane userGrid;
-    @FXML private Button addButton;
-    @FXML private Button btnLogout;
-    @FXML private Button modifierPasswordButton;
-
+    // FXML Fields
+    @FXML private TextField nameField;
+    @FXML private TextField lastnameField;
+    @FXML private TextField emailField;
+    @FXML private ComboBox<String> roleComboBox;
+    @FXML private ImageView profilePicturePreview;
+    @FXML private FlowPane cardContainer;
+    @FXML private PasswordField passwordField;
+    // Service and Data
     private final UserService userService = new UserService();
+    private final ObservableList<User> userList = FXCollections.observableArrayList();
+    private String profilePicturePath; // To store the selected profile picture path
+    private User selectedUser; // To track the currently selected user
 
     @FXML
     public void initialize() {
+        // Initialize ComboBox options
+        roleComboBox.getItems().addAll("ROLE_USER", "ROLE_ADMIN");
+
+        // Load users and display as cards
         loadUsers();
     }
 
     private void loadUsers() {
-        userGrid.getChildren().clear();
         try {
-            List<User> users = userService.select();
-            int column = 0;
-            int row = 0;
-
-            for (User user : users) {
-                VBox userCard = createUserCard(user);
-                userGrid.add(userCard, column, row);
-
-                column++;
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-            }
+            userList.clear();
+            userList.addAll(userService.select());
+            displayUsersAsCards(); // Display the users as cards
         } catch (SQLException e) {
             showAlert("Database Error", "Failed to load users: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private VBox createUserCard(User user) {
-        VBox card = new VBox(10);
-        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;");
-        card.setPrefSize(250, 200);
+    private void displayUsersAsCards() {
+        cardContainer.getChildren().clear(); // Clear existing cards
 
-        Text nameText = new Text(user.getName() + " " + user.getLastname());
-        nameText.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+        for (User user : userList) {
+            // Create a VBox for each user card
+            VBox card = new VBox(10);
+            card.setStyle("-fx-border-color: #004AAD; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 5; -fx-padding: 5; -fx-background-color: #FFFFFF;");
+            card.setPrefWidth(105); // Set card width
 
-        Text emailText = new Text(user.getEmail());
-        Text roleText = new Text("Role: " + user.getRole());
+            // Add user details to the card
+            Label nameLabel = new Label("Name: " + user.getName());
+            nameLabel.setStyle("-fx-font-weight:bold ; -fx-text-fill: #004AAD;");
 
-        // Action Buttons
-        HBox buttonBox = new HBox(10);
+            Label lastnameLabel = new Label("Lastname: " + user.getLastname());
+            lastnameLabel.setStyle("-fx-text-fill: #004AAD;");
 
-        Button detailsBtn = new Button("Détails");
-        detailsBtn.setStyle("-fx-background-color: #397163; -fx-text-fill: white;");
-        detailsBtn.setOnAction(e -> showUserDetails(user));
+            Label emailLabel = new Label("Email: " + user.getEmail());
+            emailLabel.setStyle("-fx-text-fill: #004AAD;");
 
-        Button editBtn = new Button("Modifier");
-        editBtn.setStyle("-fx-background-color: #FFC107; -fx-text-fill: black;");
-        editBtn.setOnAction(e -> editUser(user));
+            Label roleLabel = new Label("Role: " + user.getRole());
+            roleLabel.setStyle("-fx-text-fill: #004AAD;");
 
-        Button deleteBtn = new Button("Supprimer");
-        deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
-        deleteBtn.setOnAction(e -> deleteUser(user));
+            // Add profile picture
+            ImageView profilePic = new ImageView();
+            profilePic.setFitWidth(50);
+            profilePic.setFitHeight(50);
+            profilePic.setPreserveRatio(true);
+            if (user.getProfilepic() != null && !user.getProfilepic().isEmpty()) {
+                File file = new File(user.getProfilepic());
+                if (file.exists()) {
+                    profilePic.setImage(new Image(file.toURI().toString()));
+                }
+            }
 
-        buttonBox.getChildren().addAll(detailsBtn, editBtn, deleteBtn);
-        card.getChildren().addAll(nameText, emailText, roleText, buttonBox);
-        return card;
-    }
+            // Add components to the card
+            card.getChildren().addAll(profilePic, nameLabel, lastnameLabel, emailLabel, roleLabel);
 
-    private void showUserDetails(User user) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailUser.fxml"));
-            Parent root = loader.load();
+            // Enable card click to select user
+            card.setOnMouseClicked(event -> populateFormWithUser(user));
 
-            DetailUserController controller = loader.getController();
-            controller.initUserData(user);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Détails Utilisateur");
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Error", "Could not load details view: " + e.getMessage(), Alert.AlertType.ERROR);
+            // Add the card to the FlowPane
+            cardContainer.getChildren().add(card);
         }
     }
 
-    private void editUser(User user) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierUser.fxml"));
-            Parent root = loader.load();
+    private void populateFormWithUser(User user) {
+        // Populate the form fields with the selected user's data
+        selectedUser = user; // Set the selected user
+        nameField.setText(user.getName());
+        lastnameField.setText(user.getLastname());
+        emailField.setText(user.getEmail());
+        roleComboBox.setValue(user.getRole());
 
-            ModifierUserController controller = loader.getController();
-            controller.initUserData(user);
-            controller.setRefreshCallback(t -> loadUsers());
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Modifier Utilisateur");
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Error", "Could not load edit form: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-
-    private void deleteUser(User user) {
-        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmation.setTitle("Confirmation");
-        confirmation.setHeaderText("Supprimer l'utilisateur");
-        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer " + user.getName() + " " + user.getLastname() + "?");
-
-        Optional<ButtonType> result = confirmation.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                userService.delete(user.getId());
-                loadUsers(); // Refresh the user list
-                showAlert("Succès", "Utilisateur supprimé avec succès", Alert.AlertType.INFORMATION);
-            } catch (SQLException e) {
-                showAlert("Erreur", "Échec de la suppression: " + e.getMessage(), Alert.AlertType.ERROR);
+        // Load the profile picture preview
+        if (user.getProfilepic() != null && !user.getProfilepic().isEmpty()) {
+            File file = new File(user.getProfilepic());
+            if (file.exists()) {
+                profilePicturePreview.setImage(new Image(file.toURI().toString()));
+            } else {
+                profilePicturePreview.setImage(null);
             }
         }
     }
 
     @FXML
-    private void handleAddButtonAction() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterUser.fxml"));
-            Parent root = loader.load();
+    public void handleProfilePictureUpload(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Picture");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
 
-            AjouterUserController controller = loader.getController();
-            controller.setRefreshCallback(this::loadUsers);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Ajouter Utilisateur");
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Error", "Could not load add form: " + e.getMessage(), Alert.AlertType.ERROR);
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            profilePicturePath = selectedFile.getAbsolutePath();
+            profilePicturePreview.setImage(new Image(selectedFile.toURI().toString()));
+        } else {
+            showAlert("No File Selected", "Please select an image file for the profile picture.", Alert.AlertType.WARNING);
         }
     }
 
-    private void loadUsers(Void unused) {
+  /*  @FXML
+    public void handleAddAction(ActionEvent actionEvent) {
+        // Validate Name
+        if (nameField.getText().isEmpty() || !nameField.getText().matches("^[a-zA-Z]+$")) {
+            showAlert("Validation Error", "Name must not be empty and should only contain letters.", Alert.AlertType.WARNING);
+            return;
+        }
 
+        // Validate Lastname
+        if (lastnameField.getText().isEmpty() || !lastnameField.getText().matches("^[a-zA-Z]+$")) {
+            showAlert("Validation Error", "Lastname must not be empty and should only contain letters.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Validate Email
+        if (emailField.getText().isEmpty() || !emailField.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            showAlert("Validation Error", "Email must not be empty and should be a valid email address (e.g., user@example.com).", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Validate Role
+        if (roleComboBox.getValue() == null) {
+            showAlert("Validation Error", "Role must be selected.", Alert.AlertType.WARNING);
+            return;
+        }
+        String hashedPassword;
+        try {
+            hashedPassword = hashPassword(passwordField.getText().trim());
+        } catch (NoSuchAlgorithmException e) {
+            showAlert("Error", "Could not hash the password: " + e.getMessage(), Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Create a new User object
+        User user = new User(
+                nameField.getText().trim(),
+                lastnameField.getText().trim(),
+                emailField.getText().trim(),
+                hashedPassword,
+                roleComboBox.getValue(),
+                profilePicturePath // Use the selected profile picture path
+        );
+
+        try {
+            // Add the user to the database
+            userService.add(user);
+
+            // Add the user to the list and refresh cards
+            userList.add(user);
+            displayUsersAsCards();
+
+            // Clear the form
+            clearForm();
+
+            // Show success message
+            showAlert("Success", "User added successfully!", Alert.AlertType.INFORMATION);
+        } catch (SQLException e) {
+            showAlert("Error", "Could not add user: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
+    // Utility method to hash passwords
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256"); // Use SHA-256 for hashing
+        byte[] hashedBytes = md.digest(password.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashedBytes) {
+            sb.append(String.format("%02x", b)); // Convert each byte to a hex value
+        }
+        return sb.toString();
+    }*/
+
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    public void handleAddAction(ActionEvent actionEvent) {
+        // Validate Name
+        if (nameField.getText().isEmpty() || !nameField.getText().matches("^[a-zA-Z]+$")) {
+            showAlert("Validation Error", "Name must not be empty and should only contain letters.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Validate Lastname
+        if (lastnameField.getText().isEmpty() || !lastnameField.getText().matches("^[a-zA-Z]+$")) {
+            showAlert("Validation Error", "Lastname must not be empty and should only contain letters.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Validate Email
+        if (emailField.getText().isEmpty() || !emailField.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            showAlert("Validation Error", "Email must not be empty and should be a valid email address (e.g., user@example.com).", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Validate Role
+        if (roleComboBox.getValue() == null) {
+            showAlert("Validation Error", "Role must be selected.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Validate Password
+        String password = passwordField.getText().trim();
+        if (!isValidPassword(password)) {
+            showAlert("Validation Error", """
+                Password must meet the following criteria:
+                - At least 8 characters
+                - At least one uppercase letter
+                - At least one lowercase letter
+                - At least one digit
+          
+                """, Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Hash the password
+        String hashedPassword;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Error", "Logout failed: " + e.getMessage(), Alert.AlertType.ERROR);
+            hashedPassword = hashPassword(password);
+        } catch (NoSuchAlgorithmException e) {
+            showAlert("Error", "Could not hash the password: " + e.getMessage(), Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Create a new User object
+        User user = new User(
+                nameField.getText().trim(),
+                lastnameField.getText().trim(),
+                emailField.getText().trim(),
+                hashedPassword, // Store the hashed password
+                roleComboBox.getValue(),
+                profilePicturePath // Use the selected profile picture path
+        );
+
+        try {
+            // Add the user to the database
+            userService.add(user);
+
+            // Add the user to the list and refresh cards
+            userList.add(user);
+            displayUsersAsCards();
+
+            // Clear the form
+            clearForm();
+
+            // Show success message
+            showAlert("Success", "User added successfully!", Alert.AlertType.INFORMATION);
+        } catch (SQLException e) {
+            showAlert("Error", "Could not add user: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    // Utility method to validate password
+    private boolean isValidPassword(String password) {
+        // Regex for password validation
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$";
+        return password.matches(passwordRegex);
+    }
+
+    // Utility method to hash passwords
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256"); // Use SHA-256 for hashing
+        byte[] hashedBytes = md.digest(password.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashedBytes) {
+            sb.append(String.format("%02x", b)); // Convert each byte to a hex value
+        }
+        return sb.toString();
+    }
+    @FXML
+    public void handleUpdateAction(ActionEvent actionEvent) {
+        if (selectedUser == null) {
+            showAlert("No User Selected", "Please select a user to update.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Update only fields that are not empty
+        if (!nameField.getText().trim().isEmpty()) selectedUser.setName(nameField.getText().trim());
+        if (!lastnameField.getText().trim().isEmpty()) selectedUser.setLastname(lastnameField.getText().trim());
+        if (!emailField.getText().trim().isEmpty()) selectedUser.setEmail(emailField.getText().trim());
+        if (roleComboBox.getValue() != null) selectedUser.setRole(roleComboBox.getValue());
+        if (profilePicturePath != null && !profilePicturePath.isEmpty()) selectedUser.setProfilepic(profilePicturePath);
+
+        // Save the updated user
+        try {
+            userService.update(selectedUser);
+            displayUsersAsCards();
+            clearForm();
+            showAlert("Success", "User updated successfully!", Alert.AlertType.INFORMATION);
+        } catch (SQLException e) {
+            showAlert("Error", "Failed to update user: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     @FXML
-    private void handleModifyPassword(ActionEvent event) {
-        // Implement password modification logic
+    public void handleDeleteAction(ActionEvent actionEvent) {
+        if (selectedUser == null) {
+            showAlert("No User Selected", "Please select a user to delete.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Confirm deletion
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Deletion");
+        confirmationAlert.setHeaderText("Are you sure you want to delete this user?");
+        confirmationAlert.setContentText("User: " + selectedUser.getName() + " " + selectedUser.getLastname());
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    userService.delete(selectedUser.getId());
+                    userList.remove(selectedUser);
+                    displayUsersAsCards();
+                    clearForm();
+                    showAlert("Success", "User deleted successfully!", Alert.AlertType.INFORMATION);
+                } catch (SQLException e) {
+                    showAlert("Error", "Failed to delete user: " + e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+        });
+    }
+
+    private void clearForm() {
+        nameField.clear();
+        lastnameField.clear();
+        emailField.clear();
+        roleComboBox.getSelectionModel().clearSelection();
+        profilePicturePreview.setImage(null);
+        profilePicturePath = null;
+        selectedUser = null;
+        passwordField.clear();
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {
