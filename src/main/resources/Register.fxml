@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.RegisterController"
+            prefWidth="700.0" prefHeight="500.0"
+            style="-fx-background-color: #f4f7f9; -fx-padding: 30px;">
+    <children>
+        <Text layoutX="250.0" layoutY="40.0" text="Créer Un Compte"
+              strokeType="OUTSIDE" strokeWidth="0.0" fill="#333">
+            <font>
+                <Font size="28.0"/>
+            </font>
+        </Text>
+
+        <!-- Nom et prénom -->
+        <Label layoutX="100.0" layoutY="90.0" text="Nom :" />
+        <TextField fx:id="nameField" layoutX="160.0" layoutY="85.0" prefWidth="180.0" promptText="Entrez votre nom"
+                   style="-fx-background-radius: 10; -fx-border-radius: 10;"/>
+        <Label fx:id="nameErrorLabel" layoutX="160.0" layoutY="115.0" textFill="red" text=""/>
+
+        <Label layoutX="370.0" layoutY="90.0" text="Prénom :" />
+        <TextField fx:id="lastnameField" layoutX="440.0" layoutY="85.0" prefWidth="180.0" promptText="Entrez votre prénom"
+                   style="-fx-background-radius: 10; -fx-border-radius: 10;"/>
+        <Label fx:id="lastnameErrorLabel" layoutX="440.0" layoutY="115.0" textFill="red" text=""/>
+
+        <!-- Email -->
+        <Label layoutX="100.0" layoutY="150.0" text="Email :" />
+        <TextField fx:id="emailField" layoutX="160.0" layoutY="145.0" prefWidth="460.0" promptText="exemple@email.com"
+                   style="-fx-background-radius: 10; -fx-border-radius: 10;"/>
+        <Label fx:id="emailErrorLabel" layoutX="160.0" layoutY="175.0" textFill="red" text=""/>
+
+        <!-- Mot de passe -->
+        <Label layoutX="100.0" layoutY="210.0" text="Mot de passe :" />
+        <PasswordField fx:id="passwordField" layoutX="200.0" layoutY="205.0" prefWidth="220.0" promptText="Mot de passe"
+                       style="-fx-background-radius: 10; -fx-border-radius: 10;"/>
+        <TextField fx:id="VisiblePasswordField" layoutX="200.0" layoutY="205.0" prefWidth="220.0"
+                   visible="false" managed="false"
+                   style="-fx-background-radius: 10; -fx-border-radius: 10;"/>
+        <Label fx:id="passwordErrorLabel" layoutX="200.0" layoutY="235.0" textFill="red" text=""/>
+
+        <!-- Bouton Inscription -->
+        <Button text="✅ S'inscrire"
+                layoutX="270.0" layoutY="270.0"
+                prefHeight="45.0" prefWidth="160.0"
+                onAction="#handleRegisterAction"
+                style="-fx-background-color: linear-gradient(to right, #2193b0, #6dd5ed);
+                       -fx-text-fill: white;
+                       -fx-font-size: 16px;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 25;
+                       -fx-cursor: hand;" />
+
+        <!-- Bouton retour -->
+        <Button layoutX="20.0" layoutY="20.0"
+                onAction="#cancelAction"
+                style="-fx-background-color: transparent;
+                       -fx-border-color: transparent;
+                       -fx-cursor: hand;">
+            <graphic>
+                <ImageView fitHeight="35.0" fitWidth="35.0" preserveRatio="true">
+                    <image>
+                        <Image url="@image/122637.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Message global -->
+        <Label fx:id="messageLabel"
+               text=""
+               visible="false"
+               layoutX="160.0" layoutY="340.0"
+               style="-fx-font-size: 14px; -fx-text-fill: #00796B;" />
+    </children>
+</AnchorPane>

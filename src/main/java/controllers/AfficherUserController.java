@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,11 +14,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import models.User;
 import service.UserService;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import java.io.File;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class AfficherUserController {
 
@@ -29,26 +31,95 @@ public class AfficherUserController {
     @FXML private ImageView profilePicturePreview;
     @FXML private FlowPane cardContainer;
     @FXML private PasswordField passwordField;
+    @FXML private PieChart rolePieChart; // PieChart for role statistics
+    @FXML private Label errorLabel;
+    @FXML private VBox roleStatisticsContainer; // VBox for role statistics
+    @FXML private Button previousButton;
+    @FXML private Button nextButton;
+    @FXML private Label pageNumberLabel;
+    @FXML private TextField searchField; // Dynamic search field
+    @FXML private ComboBox<String> sortOrderComboBox;
     // Service and Data
     private final UserService userService = new UserService();
     private final ObservableList<User> userList = FXCollections.observableArrayList();
     private String profilePicturePath; // To store the selected profile picture path
     private User selectedUser; // To track the currently selected user
 
-    @FXML
+    // Pagination variables
+    private int currentPage = 1; // Current page number
+    private final int pageSize = 8; // Number of users per page
+
+    /*@FXML
     public void initialize() {
         // Initialize ComboBox options
         roleComboBox.getItems().addAll("ROLE_USER", "ROLE_ADMIN");
 
-        // Load users and display as cards
-        loadUsers();
+        // Initially load users and display as cards
+        loadUsers("");
+
+        // Hide statistics container initially
+        roleStatisticsContainer.setVisible(false);
+        roleStatisticsContainer.setManaged(false);
+
+        // Add listener to the search field for dynamic filtering
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            currentPage = 1; // Reset to the first page on new search
+            loadUsers(newValue); // Filter users based on the search term
+        });
+
+    }*/
+    @FXML
+    public void initialize() {
+        // Initialize ComboBox options for roles
+        roleComboBox.getItems().addAll("ROLE_USER", "ROLE_ADMIN");
+
+        // Initialize ComboBox options for sorting order
+        sortOrderComboBox.getItems().addAll("Ascending", "Descending");
+
+        // Load users initially without filtering or sorting (default to ascending order)
+        loadUsersWithSorting("", "ASC");
+
+        // Hide role statistics container initially
+        roleStatisticsContainer.setVisible(false);
+        roleStatisticsContainer.setManaged(false);
+
+        // Add listener to the search field for dynamic filtering
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            currentPage = 1; // Reset to the first page on new search
+            String sortOrder = sortOrderComboBox.getValue() != null && sortOrderComboBox.getValue().equals("Descending") ? "DESC" : "ASC";
+            loadUsersWithSorting(newValue, sortOrder); // Apply search filter and sorting
+        });
+
+        // Add listener to the sort order ComboBox for dynamic sorting
+        sortOrderComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String sortOrder = newValue.equals("Descending") ? "DESC" : "ASC";
+                loadUsersWithSorting(searchField.getText(), sortOrder); // Apply sorting to current search filter
+            }
+        });
     }
 
-    private void loadUsers() {
+    private void loadUsers(String nameFilter) {
         try {
+            // Calculate offset for the current page
+            int offset = (currentPage - 1) * pageSize;
+
+            // Fetch users based on pagination and search filter
+            List<User> users = userService.selectWithPaginationAndSearch(pageSize, offset, nameFilter);
+
+            // Clear existing users and add the new ones
             userList.clear();
-            userList.addAll(userService.select());
-            displayUsersAsCards(); // Display the users as cards
+            userList.addAll(users);
+
+            // Display the filtered users as cards
+            displayUsersAsCards();
+
+            // Update page number label
+            pageNumberLabel.setText("Page: " + currentPage);
+
+            // Enable/Disable buttons based on page availability
+            previousButton.setDisable(currentPage == 1);
+            nextButton.setDisable(users.size() < pageSize);
         } catch (SQLException e) {
             showAlert("Database Error", "Failed to load users: " + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -119,6 +190,55 @@ public class AfficherUserController {
     }
 
     @FXML
+    private void handlePreviousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            loadUsers(searchField.getText()); // Pass the current search term for filtering
+        }
+    }
+
+    @FXML
+    private void handleNextPage() {
+        currentPage++;
+        loadUsers(searchField.getText()); // Pass the current search term for filtering
+    }
+
+    private void loadRoleStatistics() {
+        try {
+            // Retrieve role counts from the database
+            int adminCount = userService.getRoleCount("ROLE_ADMIN");
+            int userCount = userService.getRoleCount("ROLE_USER");
+
+            // Create PieChart data
+            PieChart.Data adminData = new PieChart.Data("Admins", adminCount);
+            PieChart.Data userData = new PieChart.Data("Users", userCount);
+
+            // Clear old data and set new data
+            rolePieChart.getData().clear();
+            rolePieChart.getData().addAll(adminData, userData);
+            rolePieChart.setTitle("Role Distribution");
+
+        } catch (SQLException e) {
+            errorLabel.setText("Error loading statistics: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleStatistiqueAction(ActionEvent event) {
+        try {
+            // Refresh the statistics data
+            loadRoleStatistics();
+
+            // Make the statistics section visible
+            roleStatisticsContainer.setVisible(true);
+            roleStatisticsContainer.setManaged(true);
+        } catch (Exception e) {
+            showAlert("Error", "Failed to load statistics: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
     public void handleProfilePictureUpload(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Profile Picture");
@@ -135,77 +255,13 @@ public class AfficherUserController {
         }
     }
 
-  /*  @FXML
-    public void handleAddAction(ActionEvent actionEvent) {
-        // Validate Name
-        if (nameField.getText().isEmpty() || !nameField.getText().matches("^[a-zA-Z]+$")) {
-            showAlert("Validation Error", "Name must not be empty and should only contain letters.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        // Validate Lastname
-        if (lastnameField.getText().isEmpty() || !lastnameField.getText().matches("^[a-zA-Z]+$")) {
-            showAlert("Validation Error", "Lastname must not be empty and should only contain letters.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        // Validate Email
-        if (emailField.getText().isEmpty() || !emailField.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-            showAlert("Validation Error", "Email must not be empty and should be a valid email address (e.g., user@example.com).", Alert.AlertType.WARNING);
-            return;
-        }
-
-        // Validate Role
-        if (roleComboBox.getValue() == null) {
-            showAlert("Validation Error", "Role must be selected.", Alert.AlertType.WARNING);
-            return;
-        }
-        String hashedPassword;
-        try {
-            hashedPassword = hashPassword(passwordField.getText().trim());
-        } catch (NoSuchAlgorithmException e) {
-            showAlert("Error", "Could not hash the password: " + e.getMessage(), Alert.AlertType.ERROR);
-            return;
-        }
-
-        // Create a new User object
-        User user = new User(
-                nameField.getText().trim(),
-                lastnameField.getText().trim(),
-                emailField.getText().trim(),
-                hashedPassword,
-                roleComboBox.getValue(),
-                profilePicturePath // Use the selected profile picture path
-        );
-
-        try {
-            // Add the user to the database
-            userService.add(user);
-
-            // Add the user to the list and refresh cards
-            userList.add(user);
-            displayUsersAsCards();
-
-            // Clear the form
-            clearForm();
-
-            // Show success message
-            showAlert("Success", "User added successfully!", Alert.AlertType.INFORMATION);
-        } catch (SQLException e) {
-            showAlert("Error", "Could not add user: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
-    // Utility method to hash passwords
-    private String hashPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256"); // Use SHA-256 for hashing
-        byte[] hashedBytes = md.digest(password.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (byte b : hashedBytes) {
-            sb.append(String.format("%02x", b)); // Convert each byte to a hex value
-        }
-        return sb.toString();
-    }*/
-
 
     @FXML
     public void handleAddAction(ActionEvent actionEvent) {
@@ -301,6 +357,7 @@ public class AfficherUserController {
         }
         return sb.toString();
     }
+
     @FXML
     public void handleUpdateAction(ActionEvent actionEvent) {
         if (selectedUser == null) {
@@ -325,6 +382,7 @@ public class AfficherUserController {
             showAlert("Error", "Failed to update user: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
 
     @FXML
     public void handleDeleteAction(ActionEvent actionEvent) {
@@ -364,11 +422,30 @@ public class AfficherUserController {
         passwordField.clear();
     }
 
-    private void showAlert(String title, String message, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+
+    private void loadUsersWithSorting(String nameFilter, String sortOrder) {
+        try {
+            // Calculate offset for the current page
+            int offset = (currentPage - 1) * pageSize;
+
+            // Fetch users with sorting and filtering
+            List<User> users = userService.selectWithPaginationAndSorting(pageSize, offset, nameFilter, sortOrder);
+
+            // Clear existing users and add the new ones
+            userList.clear();
+            userList.addAll(users);
+
+            // Display the sorted users as cards
+            displayUsersAsCards();
+
+            // Update page number label
+            pageNumberLabel.setText("Page: " + currentPage);
+
+            // Enable/Disable buttons based on page availability
+            previousButton.setDisable(currentPage == 1);
+            nextButton.setDisable(users.size() < pageSize);
+        } catch (SQLException e) {
+            showAlert("Database Error", "Failed to load users: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 }
