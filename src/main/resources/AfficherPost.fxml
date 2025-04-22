@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controllers.AfficherPostController"
+            prefWidth="900" prefHeight="600" style="-fx-background-color: beige;">
+    <children>
+
+        <Text text="Post Management"
+              layoutX="300" layoutY="20"
+              style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-fill: #004AAD;"/>
+
+        <!-- Search and Sort Section -->
+        <HBox layoutX="20" layoutY="80" spacing="10" alignment="CENTER_LEFT" prefWidth="860" style="-fx-padding: 0 0 10 0;">
+            <children>
+                <!-- Search Field -->
+                <TextField fx:id="searchField" promptText="Rechercher par contenu..."
+                           style="-fx-background-color: white; -fx-pref-width: 300;"
+                           onKeyReleased="#handleSearchKeyReleased"/>
+
+                <!-- Spacer to push the Sort button to the opposite side -->
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <!-- Sort Button -->
+                <Button text="Sort by Content" onAction="#handleSortByContent"
+                        style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+            </children>
+        </HBox>
+
+        <!-- Modified Existing Section -->
+        <HBox layoutX="20" layoutY="120" spacing="40" alignment="CENTER">
+            <children>
+                <VBox spacing="15"
+                      style="-fx-background-color: #E8F0FE; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #004AAD; -fx-border-width: 2;"
+                      prefWidth="300">
+                    <children>
+                        <Label text="Content" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <TextArea fx:id="contentField" promptText="Enter Post Content" style="-fx-background-color: white;" prefHeight="80"/>
+                        <Label text="Image" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <ImageView fx:id="postImagePreview" fitWidth="200" fitHeight="150" style="-fx-border-color: gray; -fx-border-width: 2;"/>
+                        <Button text="Upload Image" onAction="#handlePostImageUpload"
+                                style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+
+                        <Label text="Created At" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <DatePicker fx:id="createdAtPicker" style="-fx-background-color: white;"/>
+
+                        <Label text="Updated At" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <DatePicker fx:id="updatedAtPicker" style="-fx-background-color: white;"/>
+
+                        <Label text="Blog" style="-fx-text-fill: #004AAD; -fx-font-weight: bold;"/>
+                        <ComboBox fx:id="blogComboBox" promptText="Select Associated Blog" style="-fx-background-color: white;"/>
+
+                        <!-- Buttons: Add, Update, Delete, View Stats, and View History -->
+                        <HBox spacing="15" alignment="CENTER">
+                            <Button text="Add" onAction="#handleAddAction"
+                                    style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+                            <Button text="Update" onAction="#handleUpdateAction"
+                                    style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+                            <Button text="Delete" onAction="#handleDeleteAction"
+                                    style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+                            <Button text="View Stats" onAction="#handleViewStatsAction"
+                                    style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+                        </HBox>
+
+                        <!-- History Button -->
+                        <Button fx:id="historyButton" text="View History"
+                                onAction="#handleViewHistory"
+                                style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+                    </children>
+                </VBox>
+
+                <!-- Card Section with Pagination Below -->
+                <VBox spacing="10">
+                    <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-padding: 10; -fx-border-color: #004AAD; -fx-border-width: 2;">
+                        <content>
+                            <FlowPane fx:id="cardContainer" hgap="15" vgap="15" prefWrapLength="600" style="-fx-padding: 10;"/>
+                        </content>
+                    </ScrollPane>
+
+                    <!-- Pagination Controls -->
+                    <HBox spacing="10" alignment="CENTER">
+                        <Button fx:id="prevPageButton" text="Previous" onAction="#handlePrevPage"
+                                style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+                        <Label fx:id="currentPageLabel" text="Page 1" style="-fx-font-size: 14px;"/>
+                        <Button fx:id="nextPageButton" text="Next" onAction="#handleNextPage"
+                                style="-fx-background-color: #004AAD; -fx-text-fill: white;"/>
+                    </HBox>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- PieChart for Dynamic Stats -->
+        <VBox spacing="20" alignment="CENTER" layoutX="350" layoutY="350">
+            <children>
+                <Text text="" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <PieChart fx:id="statsPieChart" prefHeight="300" prefWidth="400" />
+            </children>
+        </VBox>
+
+        <!-- History Section (Initially Hidden) -->
+        <VBox fx:id="historySection" layoutX="550" layoutY="120" spacing="10"
+              visible="false" managed="false"
+              style="-fx-background-color: #E8F0FE; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #004AAD; -fx-border-width: 2;"
+              prefWidth="300" prefHeight="400">
+            <children>
+                <Label text="Post History"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #004AAD;"/>
+                <TextArea fx:id="historyArea" editable="false" wrapText="true"
+                          style="-fx-background-color: white; -fx-border-color: #004AAD; -fx-border-width: 2;"
+                          prefWidth="280" prefHeight="300"/>
+
+                <!-- Close Button -->
+                <Button text="Close"
+                        onAction="#handleCloseHistory"
+                        style="-fx-background-color: #FF6347; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
