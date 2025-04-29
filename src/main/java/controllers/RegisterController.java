@@ -6,17 +6,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.User;
 import org.mindrot.jbcrypt.BCrypt;
 import service.UserService;
+import java.util.Optional;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 public class RegisterController {
-
     @FXML
     private TextField nameField;
     @FXML
@@ -27,7 +31,8 @@ public class RegisterController {
     private PasswordField passwordField;
     @FXML
     private TextField visiblePasswordField;
-
+    @FXML
+    private ImageView profilePicturePreview; // ImageView for profile picture preview
     @FXML
     private Label nameErrorLabel;
     @FXML
@@ -36,12 +41,24 @@ public class RegisterController {
     private Label emailErrorLabel;
     @FXML
     private Label passwordErrorLabel;
-
+    @FXML
+    private Label profilePicErrorLabel; // Label for profile picture errors
     @FXML
     private Label messageLabel;
+    @FXML
+    private Button showPasswordButton;
+    @FXML
+    private Button generatePasswordButton;
 
     private boolean passwordVisible = false;
     private final UserService userService = new UserService();
+    private String profilePicturePath = null; // Path to the selected profile picture
+
+    @FXML
+    private void initialize() {
+        // Initialize UI components and event handlers
+        setupShowPasswordButton();
+    }
 
     @FXML
     private void handleRegisterAction(ActionEvent event) {
@@ -86,7 +103,8 @@ public class RegisterController {
                     hasError = true;
                 }
             } catch (SQLException e) {
-                emailErrorLabel.setText("Database error");
+                emailErrorLabel.setText("Database error while checking email");
+                e.printStackTrace();
                 hasError = true;
             }
         }
@@ -100,31 +118,112 @@ public class RegisterController {
             hasError = true;
         }
 
+        // If validation errors exist, stop execution
         if (hasError) return;
 
         try {
-            // Hash password and create a new user
-            String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
-            User user = new User(name, lastname, email, hashedPassword, "ROLE_USER", null); // Role and profilepic are default
+            // Create a new user object
+            User user = new User(name, lastname, email, rawPassword, "ROLE_USER", profilePicturePath);
 
-            // Save user
+            // Add the user to the database (UserService will handle password hashing)
             userService.add(user);
 
             // Redirect to login page and prefill email/password
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
             Parent root = loader.load();
+
+            // Prefill login details in the login page
             LoginController loginController = loader.getController();
             loginController.prefillLogin(email, rawPassword);
 
+            // Update the stage with the login scene
             Stage stage = (Stage) nameField.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Login");
             stage.show();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showMessage("Database error occurred during registration", "error");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showMessage("Error loading the login screen", "error");
         } catch (Exception e) {
             e.printStackTrace();
-            showMessage("An error occurred during registration", "error");
+            showMessage("An unexpected error occurred during registration", "error");
         }
+    }
+
+    @FXML
+    private void handleUploadProfilePicture(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Picture");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            profilePicturePath = selectedFile.getAbsolutePath();
+            profilePicturePreview.setImage(new Image(selectedFile.toURI().toString())); // Display the selected image
+            profilePicErrorLabel.setText(""); // Clear any previous error message for profile picture
+        } else {
+            profilePicErrorLabel.setText("No file selected");
+        }
+    }
+
+    @FXML
+    private void handleShowPasswordAction(ActionEvent event) {
+        passwordVisible = !passwordVisible;
+
+        if (passwordVisible) {
+            // Show password
+            visiblePasswordField.setText(passwordField.getText());
+            visiblePasswordField.setVisible(true);
+            visiblePasswordField.setManaged(true);
+            passwordField.setVisible(false);
+            passwordField.setManaged(false);
+            showPasswordButton.setText("Masquer");
+        } else {
+            // Hide password
+            passwordField.setText(visiblePasswordField.getText());
+            passwordField.setVisible(true);
+            passwordField.setManaged(true);
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
+            showPasswordButton.setText("Afficher");
+        }
+    }
+
+    @FXML
+    private void handleGeneratePasswordAction(ActionEvent event) {
+        PasswordGeneratorDialog dialog = new PasswordGeneratorDialog();
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            String generatedPassword = result.get();
+
+            if (passwordVisible) {
+                visiblePasswordField.setText(generatedPassword);
+            } else {
+                passwordField.setText(generatedPassword);
+            }
+
+            passwordErrorLabel.setText("");
+        }
+    }
+
+    private void setupShowPasswordButton() {
+        // Add listener to sync the two password fields
+        passwordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!passwordVisible) {
+                visiblePasswordField.setText(newValue);
+            }
+        });
+
+        visiblePasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (passwordVisible) {
+                passwordField.setText(newValue);
+            }
+        });
     }
 
     private boolean isValidEmail(String email) {
@@ -137,6 +236,7 @@ public class RegisterController {
         lastnameErrorLabel.setText("");
         emailErrorLabel.setText("");
         passwordErrorLabel.setText("");
+        profilePicErrorLabel.setText("");
         messageLabel.setText("");
     }
 

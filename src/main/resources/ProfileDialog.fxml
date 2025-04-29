@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: white; -fx-background-radius: 10;"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.ProfileDialogController">
+
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="0.0" layoutY="0.0" prefHeight="500.0" prefWidth="400.0" spacing="15.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+
+            <Label text="Edit Profile" textFill="#2262c6">
+                <font>
+                    <Font name="Berlin Sans FB" size="24.0" />
+                </font>
+            </Label>
+
+            <!-- Profile Picture -->
+            <VBox alignment="CENTER" spacing="10.0">
+                <ImageView fx:id="profilePictureView" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                <Button text="Change Picture" onAction="#handleProfilePictureUpload"
+                        style="-fx-background-color: #2262c6; -fx-text-fill: white; -fx-font-weight: bold;" />
+            </VBox>
+
+            <!-- Form Fields -->
+            <VBox spacing="5.0">
+                <Label text="Name" textFill="#545352" />
+                <TextField fx:id="nameField" promptText="Enter your name" />
+                <Label fx:id="nameErrorLabel" textFill="RED" visible="false" />
+            </VBox>
+
+            <VBox spacing="5.0">
+                <Label text="Lastname" textFill="#545352" />
+                <TextField fx:id="lastnameField" promptText="Enter your lastname" />
+                <Label fx:id="lastnameErrorLabel" textFill="RED" visible="false" />
+            </VBox>
+
+            <VBox spacing="5.0">
+                <Label text="Email" textFill="#545352" />
+                <TextField fx:id="emailField" promptText="Enter your email" />
+                <Label fx:id="emailErrorLabel" textFill="RED" visible="false" />
+            </VBox>
+
+            <VBox spacing="5.0">
+                <Label text="Password" textFill="#545352" />
+                <PasswordField fx:id="passwordField" promptText="Enter new password (leave empty to keep current)" />
+                <Label fx:id="passwordErrorLabel" textFill="RED" visible="false" />
+            </VBox>
+
+            <Label fx:id="statusMessageLabel" textFill="GREEN" visible="false" />
+
+            <!-- Action Buttons -->
+            <HBox alignment="CENTER" spacing="20.0">
+                <Button text="Update" onAction="#handleUpdateAction"
+                        style="-fx-background-color: #2262c6; -fx-text-fill: white; -fx-font-weight: bold;" />
+                <Button text="Cancel" onAction="#handleCancelAction"
+                        style="-fx-background-color: #FF5555; -fx-text-fill: white; -fx-font-weight: bold;" />
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

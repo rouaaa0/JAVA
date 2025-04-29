@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Home extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/AfficherUser.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
         primaryStage.setTitle("Connexion");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

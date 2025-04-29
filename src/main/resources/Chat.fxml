@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.ChatController"
+            styleClass="main-container"
+            prefWidth="450" prefHeight="650">
+
+    <stylesheets>
+        <URL value="@/css/modern-chat.css" />
+    </stylesheets>
+
+    <top>
+        <!-- Barre de titre avec gestion de fenêtre -->
+        <HBox styleClass="title-bar">
+            <HBox styleClass="title-content">
+                <ImageView styleClass="logo-image">
+                    <Image url="@/image/chat_icon.png" />
+                </ImageView>
+                <Label styleClass="title-text" text="Messagerie" />
+            </HBox>
+
+            <HBox styleClass="window-controls" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                <Button styleClass="window-button, minimize-button" text="_" onAction="#handleMinimizeWindow"/>
+                <Button styleClass="window-button, maximize-button" text="□" onAction="#handleMaximizeWindow"/>
+                <Button styleClass="window-button, close-button" text="×" onAction="#handleCloseChat"/>
+            </HBox>
+
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15" />
+            </padding>
+        </HBox>
+    </top>
+
+    <center>
+        <!-- Container principal avec ombre et arrondis -->
+        <StackPane styleClass="messages-container">
+            <!-- Zone de liste des messages -->
+            <VBox VBox.vgrow="ALWAYS" spacing="0">
+                <!-- En-tête: État actif/connecté -->
+                <HBox styleClass="status-bar">
+                    <Circle fx:id="statusIndicator" styleClass="status-indicator, status-online" radius="6"/>
+                    <Label text="En ligne" styleClass="status-text"/>
+                </HBox>
+
+                <!-- Liste des messages avec support de drag and drop -->
+                <StackPane fx:id="messageListViewContainer" VBox.vgrow="ALWAYS" styleClass="message-list-container">
+                    <ListView fx:id="messageListView" styleClass="message-list"/>
+                </StackPane>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <VBox spacing="5" styleClass="input-container">
+            <!-- Zone de prévisualisation des pièces jointes -->
+            <HBox fx:id="attachmentPreviewBox" visible="false" managed="false" styleClass="attachment-preview">
+                <HBox styleClass="attachment-info">
+                    <ImageView fx:id="attachmentTypeIcon" fitHeight="16" fitWidth="16" styleClass="attachment-icon"/>
+                    <Label fx:id="attachmentLabel" styleClass="attachment-name" text="Fichier attaché: " />
+                </HBox>
+                <Button fx:id="removeAttachmentButton" onAction="#handleRemoveAttachment"
+                        styleClass="remove-attachment-button" text="×"/>
+            </HBox>
+
+            <!-- Zone d'enregistrement audio (visible uniquement pendant l'enregistrement) -->
+            <HBox fx:id="recordingBox" visible="false" managed="false" styleClass="recording-box" spacing="10" alignment="CENTER_LEFT">
+                <Circle fx:id="recordingIndicator" radius="8" styleClass="recording-indicator"/>
+                <Label fx:id="recordingTimeLabel" text="00:00" styleClass="recording-time"/>
+                <Label text="Enregistrement en cours..." styleClass="recording-status"/>
+                <Button fx:id="stopRecordingButton" onAction="#handleStopRecording" styleClass="stop-recording-button" text="Arrêter"/>
+                <Button fx:id="cancelRecordingButton" onAction="#handleCancelRecording" styleClass="cancel-recording-button" text="Annuler"/>
+            </HBox>
+            <VBox fx:id="mentionSuggestionsBox" visible="false" managed="false" styleClass="mention-suggestions">
+                <ListView fx:id="mentionSuggestionsList" styleClass="mention-list" prefHeight="150" prefWidth="350" />
+            </VBox>
+            <!-- Zone de composition de message -->
+            <HBox styleClass="message-compose-box" alignment="CENTER">
+                <!-- Boutons d'actions -->
+                <HBox styleClass="action-buttons" spacing="5">
+                    <Button fx:id="emojiButton" onAction="#handleEmojiPicker" styleClass="action-button, emoji-button">
+                        <graphic>
+                            <ImageView styleClass="button-icon">
+                                <Image url="@/image/emoji-icon.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="imageButton" onAction="#handleImageUpload" styleClass="action-button, image-button">
+                        <graphic>
+                            <ImageView styleClass="button-icon">
+                                <Image url="@/image/image-icon.jpg" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="fileButton" onAction="#handleFileUpload" styleClass="action-button, file-button">
+                        <graphic>
+                            <ImageView styleClass="button-icon">
+                                <Image url="@/image/file-icon.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <!-- Nouveau bouton pour l'enregistrement vocal -->
+                    <Button fx:id="voiceButton" onAction="#handleVoiceRecording" styleClass="action-button, voice-button">
+                        <graphic>
+                            <ImageView styleClass="button-icon">
+                                <Image url="@/image/microphone-icon.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+
+                <!-- Champ de texte central -->
+                <TextField fx:id="messageTextField"
+                           promptText="Écrivez votre message..."
+                           onKeyPressed="#handleKeyPress"
+                           styleClass="message-input"
+                           HBox.hgrow="ALWAYS"/>
+
+                <!-- Bouton d'envoi -->
+                <Button fx:id="sendButton" onAction="#handleSendMessage" styleClass="send-button">
+                    <graphic>
+                        <ImageView fx:id="sendIcon" styleClass="send-icon">
+                            <Image url="@/image/4980390.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </bottom>
+
+    <!-- Overlay pour le drag and drop (visible uniquement pendant le glisser-déposer) -->
+    <StackPane fx:id="dropOverlay" styleClass="drop-overlay" visible="false">
+        <VBox alignment="CENTER" spacing="15">
+            <ImageView styleClass="drop-icon" fitHeight="64" fitWidth="64">
+                <Image url="@/image/upload-icon.png" />
+            </ImageView>
+            <Label styleClass="drop-text" text="Déposez votre fichier ici" />
+        </VBox>
+    </StackPane>
+</BorderPane>
