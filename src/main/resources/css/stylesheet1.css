@@ -1,0 +1,63 @@
+.sidebar{
+    -fx-background-color: #2262C6;
+    -fx-background-radius: 0px 50px 0px 0px;
+}
+.labbtn{
+    -fx-text-fill: #2262C6;
+    -fx-background-color: #FEFFFD;
+    -fx-background-radius: 50px;
+}
+.sidebar-btn{
+    -fx-background-color: transparent;
+}
+.sidebar-btn-text{
+    -fx-text-fill: #A2BEE8;
+}
+.sidebar-btn:hover .sidebar-btn-text{
+    -fx-text-fill: #7AA2E7;
+}
+.course-card {
+    -fx-border-radius: 0px 50px 0px 0px;
+    -fx-border-color: #F1F2F7;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.nav-item {
+    -fx-padding: 6 10;
+    -fx-font-family: 'Cambria';
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+.nav-item:hover {
+    -fx-text-fill: #1c4a98;
+    -fx-underline: true;
+}
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2262c6;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 10px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.nav-item:hover {
+    -fx-text-fill: #1a4e9b;
+    -fx-underline: true;
+}
+.combo-box.sort-combo {
+    -fx-background-color: linear-gradient(to right, #f2f2f2, #d9d9d9);
+    -fx-border-color: #b3b3b3;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-size: 10px;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-padding: 3 6 3 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.combo-box.sort-combo:hover {
+    -fx-background-color: linear-gradient(to right, #e6e6e6, #cccccc);
+    -fx-border-color: #999;
+}

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<AnchorPane prefHeight="580.0" prefWidth="981.0" stylesheets="@../css/stylesheet1.css"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.pi.EvenementFController">
+
+    <children>
+        <!-- Navbar -->
+        <HBox alignment="CENTER_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="60.0" prefWidth="981.0"
+              spacing="20.0" style="-fx-background-color: #ffffff;" styleClass="navbar">
+            <children>
+                <!-- Logo -->
+                <ImageView fitHeight="44.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- Changez le chemin de l'image -->
+                        <Image url="@../images/logo.jpeg" />
+                    </image>
+                </ImageView>
+
+                <Label text="Edunova" textFill="#2262c6">
+                    <font>
+                        <Font name="Berlin Sans FB" size="20.0" />
+                    </font>
+                </Label>
+
+                <Button styleClass="nav-item" text="Mes Evenements" textFill="#2262c6" onMouseClicked="#goToMyDrivePage"/>
+                <Button styleClass="nav-item" text="Mes Clubs" textFill="#2262c6" onMouseClicked="#goToMyDrivePageC"/>
+                <Button fx:id="btnBlogs" styleClass="nav-item" text="Mes Blogs" textFill="#2262c6"/>
+                <Button fx:id="btnUsers" styleClass="nav-item" text="Mes Utilisateurs" textFill="#2262c6"/>
+
+
+                <HBox HBox.hgrow="ALWAYS" />
+
+                <!-- Icons -->
+                <ImageView fitHeight="22.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- Changez le chemin de l'image -->
+                        <Image url="@../images/icons8_bell_24px.png" />
+                    </image>
+                </ImageView>
+
+                <ImageView fitHeight="22.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- Changez le chemin de l'image -->
+                        <Image url="@../images/icons8_help_32px.png" />
+                    </image>
+                </ImageView>
+
+                <ImageView fitHeight="22.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- Changez le chemin de l'image -->
+                        <Image url="@../images/icons8_settings_26px.png" />
+                    </image>
+                </ImageView>
+            </children>
+            <padding>
+                <Insets left="10.0" right="10.0" />
+            </padding>
+        </HBox>
+        <!-- Titre principal -->
+        <Label layoutX="73.0" layoutY="86.0" text="Mes Événements" textFill="#2262c6">
+            <font>
+                <Font name="Berlin Sans FB" size="24.0" />
+            </font>
+        </Label>
+        <ComboBox fx:id="sortCriteriaComboBox" layoutX="720.0" layoutY="140.0" prefWidth="100.0"
+                  onAction="#onSortChanged" styleClass="sort-combo"/>
+        <ComboBox fx:id="sortOrderComboBox" layoutX="830.0" layoutY="140.0" prefWidth="110.0"
+                  onAction="#onSortChanged" styleClass="sort-combo"/>
+
+
+        <TextField fx:id="searchField" layoutX="720.0" layoutY="105.0"
+                   promptText="Rechercher un evenement..."
+                   prefHeight="30.0" prefWidth="222.0"
+                   onKeyReleased="#onSearchKeyReleased"
+                   style="-fx-background-color: transparent; -fx-border-radius: 50px; -fx-border-color: #AEB2C3;">
+            <font>
+                <Font name="Berlin Sans FB" size="13.0"/>
+            </font>
+            <effect>
+                <DropShadow color="#b9b6b6"/>
+            </effect>
+        </TextField>
+
+        <!-- Sous-titre Récents -->
+        <Label layoutX="73.0" layoutY="138.0" text="Événements Récents" textFill="#545352">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Label>
+
+        <!-- Sous-titre Tous -->
+        <Label layoutX="73.0" layoutY="302.0" text="Tous les Événements" textFill="#545352">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Label>
+
+        <AnchorPane xmlns:fx="http://javafx.com/fxml" prefWidth="800" prefHeight="600">
+            <!-- HBox pour les événements récents -->
+            <HBox fx:id="recenthb" spacing="10.0" AnchorPane.topAnchor="160.0" AnchorPane.leftAnchor="93.0"
+                  prefHeight="147.0" prefWidth="674.0" />
+
+            <!-- ScrollPane pour les autres événements -->
+            <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="230" AnchorPane.topAnchor="340.0" AnchorPane.leftAnchor="93.0"
+                        AnchorPane.rightAnchor="93.0">
+                <VBox fx:id="tosevents" />
+            </ScrollPane>
+        </AnchorPane>
+
+
+    </children>
+</AnchorPane>
