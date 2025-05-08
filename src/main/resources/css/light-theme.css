@@ -1,0 +1,14 @@
+.root {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+.navbar {
+    -fx-background-color: #ffffff;
+}
+.nav-item {
+    -fx-text-fill: #2262c6;
+}
+.text-field, .combo-box {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}

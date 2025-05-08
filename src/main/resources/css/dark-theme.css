@@ -1,0 +1,82 @@
+/* === Mode Sombre === */
+.root {
+    -fx-background-color: #1e1e1e; /* Fond sombre pour toute la page */
+    -fx-text-fill: #f0f0f0; /* Texte clair */
+}
+
+/* NE PAS MODIFIER LA NAVBAR DANS LE DARK MODE */
+.navbar {
+    -fx-background-color: #ffffff; /* Garde la navbar avec un fond clair */
+}
+
+/* Styles des éléments de la navbar */
+.nav-item {
+    -fx-text-fill: #90caf9; /* Couleur des textes des items de la navbar */
+}
+
+/* Titre principal */
+.Label {
+    -fx-text-fill: #2262c6; /* Couleur du texte du titre */
+}
+
+/* Champs de texte, combo-box, et autres composants */
+.text-field, .combo-box {
+    -fx-background-color: #2c2c2c; /* Fond sombre pour les champs */
+    -fx-text-fill: #f0f0f0; /* Texte clair dans les champs */
+    -fx-prompt-text-fill: #aaaaaa; /* Texte des hints en gris */
+    -fx-border-color: #444; /* Bordure sombre */
+}
+
+/* ComboBox spécifique */
+.sort-combo {
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: #f0f0f0;
+    -fx-border-color: #444;
+}
+
+/* Styles des boutons */
+.button {
+    -fx-background-color: #3c3f41; /* Fond sombre pour les boutons */
+    -fx-text-fill: #f0f0f0; /* Texte clair sur les boutons */
+}
+
+/* Effet de survol sur les boutons */
+.button:hover {
+    -fx-background-color: #505356; /* Fond plus clair au survol */
+}
+#mainContent {
+    -fx-background-color: #1e1e1e;
+}
+
+/* ScrollPane */
+.scroll-pane, .scroll-pane .viewport {
+    -fx-background-color: #1e1e1e; /* Fond sombre pour le contenu défilant */
+}
+
+/* Conteneurs VBox et HBox */
+.vbox, .hbox {
+    -fx-background-color: transparent; /* Pas de fond sur les VBox et HBox */
+}
+
+/* Style des labels sous forme de sous-titres */
+.Label {
+    -fx-text-fill: #545352; /* Couleur des textes des sous-titres */
+    -fx-font-family: "Berlin Sans FB";
+}
+
+/* Champs de recherche */
+.text-field#searchField {
+    -fx-background-color: transparent;
+    -fx-border-radius: 50px;
+    -fx-border-color: #AEB2C3;
+    -fx-text-fill: #f0f0f0;
+}
+
+.text-field#searchField:hover {
+    -fx-border-color: #90caf9;
+}
+
+/* Pour le contenu de la ScrollPane et la VBox */
+.vbox#tosevents {
+    -fx-background-color: #1e1e1e;
+}

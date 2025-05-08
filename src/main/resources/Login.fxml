@@ -54,5 +54,6 @@
     <!-- Message d'erreur -->
     <Label fx:id="errorLabel" textFill="red"
            style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+    <Hyperlink onAction="#handleForgotPassword" text="Mot de passe oublié ?" />
 
 </VBox>

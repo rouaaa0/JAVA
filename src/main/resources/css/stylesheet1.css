@@ -1,0 +1,233 @@
+.sidebar{
+    -fx-background-color: #2262C6;
+    -fx-background-radius: 0px 50px 0px 0px;
+}
+.labbtn{
+    -fx-text-fill: #2262C6;
+    -fx-background-color: #FEFFFD;
+    -fx-background-radius: 50px;
+}
+.sidebar-btn{
+    -fx-background-color: transparent;
+}
+.sidebar-btn-text{
+    -fx-text-fill: #A2BEE8;
+}
+.sidebar-btn:hover .sidebar-btn-text{
+    -fx-text-fill: #7AA2E7;
+}
+.course-card {
+    -fx-border-radius: 0px 50px 0px 0px;
+    -fx-border-color: #F1F2F7;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.nav-item {
+    -fx-padding: 6 10;
+    -fx-font-family: 'Cambria';
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+.nav-item:hover {
+    -fx-text-fill: #1c4a98;
+    -fx-underline: true;
+}
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2262c6;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 10px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.nav-item:hover {
+    -fx-text-fill: #1a4e9b;
+    -fx-underline: true;
+}
+.combo-box.sort-combo {
+    -fx-background-color: linear-gradient(to right, #f2f2f2, #d9d9d9);
+    -fx-border-color: #b3b3b3;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-size: 10px;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-padding: 3 6 3 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.combo-box.sort-combo:hover {
+    -fx-background-color: linear-gradient(to right, #e6e6e6, #cccccc);
+    -fx-border-color: #999;
+}
+/* Stylesheet1.css */
+
+/* ===== Styles globaux ===== */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-color: #f8f9fa;
+}
+
+/* ===== Navigation Bar ===== */
+.navbar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 1);
+    -fx-padding: 8px 20px;
+}
+
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2262c6;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.nav-item:hover {
+    -fx-background-color: #eef5ff;
+}
+
+/* Boutons utilisateur */
+.theme-toggle-button, .profile-button {
+    -fx-background-color: white;
+    -fx-text-fill: #2262c6;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.2, 0, 0);
+}
+
+.logout-button {
+    -fx-background-color: #FF5555;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.2, 0, 0);
+}
+
+/* ===== Titres et sous-titres ===== */
+.section-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2262c6;
+}
+
+.sub-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: #545352;
+}
+
+.section-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #545352;
+    -fx-padding: 0 0 5px 0;
+}
+
+/* ===== Cartes de fonctionnalités ===== */
+.feature-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 0);
+    -fx-padding: 15px;
+}
+
+.card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2262c6;
+}
+
+.card-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #545352;
+}
+
+.primary-button {
+    -fx-background-color: #2262c6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 15px;
+    -fx-background-radius: 5px;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1a4fa8;
+    -fx-cursor: hand;
+}
+
+/* ===== Activités récentes ===== */
+.activity-item {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.activity-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2262c6;
+}
+
+.activity-time {
+    -fx-text-fill: #545352;
+    -fx-font-size: 12px;
+}
+
+/* ===== Bouton de chat ===== */
+.chat-button {
+    -fx-background-color: linear-gradient(to bottom right, #3498db, #2980b9);
+    -fx-background-radius: 50%;
+    -fx-min-width: 60px;
+    -fx-min-height: 60px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.chat-button:hover {
+    -fx-background-color: linear-gradient(to bottom right, #2980b9, #1a5276);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* ===== Mode sombre ===== */
+.dark-mode {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .navbar {
+    -fx-background-color: #1f1f1f;
+}
+
+.dark-mode .nav-item {
+    -fx-text-fill: #6ca0e8;
+}
+
+.dark-mode .section-title {
+    -fx-text-fill: #6ca0e8;
+}
+
+.dark-mode .sub-title,
+.dark-mode .section-header {
+    -fx-text-fill: #b0b0b0;
+}
+
+.dark-mode .feature-card,
+.dark-mode .activity-item {
+    -fx-background-color: #2a2a2a;
+}
+
+.dark-mode .card-title,
+.dark-mode .activity-title {
+    -fx-text-fill: #6ca0e8;
+}
+
+.dark-mode .card-subtitle,
+.dark-mode .activity-time {
+    -fx-text-fill: #b0b0b0;
+}

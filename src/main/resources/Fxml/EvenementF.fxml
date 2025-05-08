@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="594.0" prefWidth="1011.0" stylesheets="@/css/stylesheet1.css"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.EvenementFController">
+
+    <children>
+
+        <!-- Navbar -->
+        <HBox  fx:id="navbar" styleClass="navbar" alignment="CENTER_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="60.0" prefWidth="981.0"
+              spacing="20.0" style="-fx-background-color: #ffffff;">
+            <children>
+                <!-- Logo -->
+                <ImageView fitHeight="44.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/logo.jpeg" />
+                    </image>
+                </ImageView>
+
+                <Label text="Edunova" textFill="#2262c6">
+                    <font>
+                        <Font name="Berlin Sans FB" size="20.0" />
+                    </font>
+                </Label>
+
+                <Button styleClass="nav-item" text="Accueil" textFill="#2262c6" onAction="#goToAccueil" />
+                <Button styleClass="nav-item" text="Evenements" textFill="#2262c6" onAction="#goToEventPage"/>
+                <Button styleClass="nav-item" text="Clubs" textFill="#2262c6" onAction="#goToClubPage"/>
+                <Button styleClass="nav-item" text="Blogs" textFill="#2262c6" onAction="#goToBlogsPage" />
+                <Button styleClass="nav-item" text="Posts" textFill="#2262c6" onAction="#goToPostPage" />
+
+                <HBox HBox.hgrow="ALWAYS" />
+
+                <!-- Theme Toggle Button -->
+                <Button fx:id="themeToggleBtn" text="🌙" styleClass="nav-item" onAction="#toggleTheme" />
+
+                <!-- Profile Button -->
+                <Button text="Profile" onAction="#navigateToProfile"
+                        style="-fx-background-color: #ffffff; -fx-text-fill: #2262c6; -fx-font-weight: bold;
+                               -fx-padding: 3 10; -fx-border-radius: 10; -fx-background-radius: 10;
+                               -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.2, 0, 0);" />
+
+                <!-- Logout Button -->
+                <Button text="Déconnexion" onAction="#handleLogoutAction"
+                        style="-fx-background-color: #FF5555; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-padding: 3 10; -fx-border-radius: 10; -fx-background-radius: 10;
+                               -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.2, 0, 0);" />
+            </children>
+            <padding>
+                <Insets left="10.0" right="10.0" />
+            </padding>
+        </HBox>
+
+        <!-- Contenu principal -->
+        <AnchorPane fx:id="mainContent" layoutX="0.0" layoutY="40.0" prefHeight="516.0" prefWidth="1011.0">
+            <children>
+
+                <!-- Titre principal -->
+                <Label layoutX="73.0" layoutY="86.0" text="Mes Événements" textFill="#2262c6">
+                    <font>
+                        <Font name="Berlin Sans FB" size="24.0" />
+                    </font>
+                </Label>
+
+                <!-- Champs de recherche -->
+                <TextField fx:id="searchField" layoutX="720.0" layoutY="105.0"
+                           promptText="Rechercher un evenement..." prefHeight="30.0" prefWidth="222.0"
+                           onKeyReleased="#onSearchKeyReleased"
+                           style="-fx-background-color: transparent; -fx-border-radius: 50px;
+                                  -fx-border-color: #AEB2C3;">
+                    <font>
+                        <Font name="Berlin Sans FB" size="13.0"/>
+                    </font>
+                    <effect>
+                        <DropShadow color="#b9b6b6"/>
+                    </effect>
+                </TextField>
+
+                <!-- ComboBox de tri -->
+                <ComboBox fx:id="sortCriteriaComboBox" layoutX="720.0" layoutY="140.0" prefWidth="100.0"
+                          onAction="#onSortChanged" styleClass="sort-combo"/>
+                <ComboBox fx:id="sortOrderComboBox" layoutX="830.0" layoutY="140.0" prefWidth="110.0"
+                          onAction="#onSortChanged" styleClass="sort-combo"/>
+
+                <!-- Sous-titres -->
+                <Label layoutX="73.0" layoutY="138.0" text="Événements Récents" textFill="#545352">
+                    <font>
+                        <Font name="Berlin Sans FB" size="14.0" />
+                    </font>
+                </Label>
+
+                <Label layoutX="73.0" layoutY="302.0" text="Tous les Événements" textFill="#545352">
+                    <font>
+                        <Font name="Berlin Sans FB" size="14.0" />
+                    </font>
+                </Label>
+
+                <!-- HBox pour les événements récents -->
+                <HBox fx:id="recenthb" spacing="10.0" AnchorPane.topAnchor="160.0" AnchorPane.leftAnchor="93.0"
+                      prefHeight="147.0" prefWidth="674.0" />
+
+                <!-- ScrollPane pour tous les événements -->
+                <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="230"
+                            AnchorPane.topAnchor="340.0" AnchorPane.leftAnchor="93.0"
+                            AnchorPane.rightAnchor="93.0">
+                    <content>
+                        <VBox fx:id="tosevents" />
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </AnchorPane>
+
+    </children>
+</AnchorPane>

@@ -1,25 +1,40 @@
 package controllers;
 
+import javafx.animation.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
+import javafx.util.Duration;
 import models.User;
 import service.UserService;
+import utils.SessionManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
+
 
 public class AfficherUserController {
 
@@ -39,6 +54,13 @@ public class AfficherUserController {
     @FXML private Label pageNumberLabel;
     @FXML private TextField searchField; // Dynamic search field
     @FXML private ComboBox<String> sortOrderComboBox;
+    @FXML private Label nameErrorLabel;
+    @FXML private Label lastnameErrorLabel;
+    @FXML private Label emailErrorLabel;
+    @FXML private Label roleErrorLabel;
+    @FXML private Label passwordErrorLabel;
+
+
     // Service and Data
     private final UserService userService = new UserService();
     private final ObservableList<User> userList = FXCollections.observableArrayList();
@@ -49,25 +71,6 @@ public class AfficherUserController {
     private int currentPage = 1; // Current page number
     private final int pageSize = 8; // Number of users per page
 
-    /*@FXML
-    public void initialize() {
-        // Initialize ComboBox options
-        roleComboBox.getItems().addAll("ROLE_USER", "ROLE_ADMIN");
-
-        // Initially load users and display as cards
-        loadUsers("");
-
-        // Hide statistics container initially
-        roleStatisticsContainer.setVisible(false);
-        roleStatisticsContainer.setManaged(false);
-
-        // Add listener to the search field for dynamic filtering
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            currentPage = 1; // Reset to the first page on new search
-            loadUsers(newValue); // Filter users based on the search term
-        });
-
-    }*/
     @FXML
     public void initialize() {
         // Initialize ComboBox options for roles
@@ -97,8 +100,8 @@ public class AfficherUserController {
                 loadUsersWithSorting(searchField.getText(), sortOrder); // Apply sorting to current search filter
             }
         });
-    }
 
+    }
     private void loadUsers(String nameFilter) {
         try {
             // Calculate offset for the current page
@@ -243,7 +246,7 @@ public class AfficherUserController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Profile Picture");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+                new FileChooser.ExtensionFilter("Image Files", ".png", ".jpg", ".jpeg", ".gif")
         );
 
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -298,7 +301,6 @@ public class AfficherUserController {
                 - At least one uppercase letter
                 - At least one lowercase letter
                 - At least one digit
-          
                 """, Alert.AlertType.WARNING);
             return;
         }
@@ -383,7 +385,6 @@ public class AfficherUserController {
         }
     }
 
-
     @FXML
     public void handleDeleteAction(ActionEvent actionEvent) {
         if (selectedUser == null) {
@@ -422,7 +423,6 @@ public class AfficherUserController {
         passwordField.clear();
     }
 
-
     private void loadUsersWithSorting(String nameFilter, String sortOrder) {
         try {
             // Calculate offset for the current page
@@ -448,4 +448,80 @@ public class AfficherUserController {
             showAlert("Database Error", "Failed to load users: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+    @FXML
+    public void handleLogout(ActionEvent actionEvent) {
+        SessionManager.logout(); // Clear the session
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading login screen: " + e.getMessage());
+            showAlert("Error", "Failed to return to login screen: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public void goToMyDrivePage(ActionEvent actionEvent) {
+    }
+    @FXML
+    public void goToBlogPage(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherBlog.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to navigate to Blog page: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    public void goToPostPage(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherPost.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to navigate to Post page: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    public void goToClubPage(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Club.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to navigate to Club page: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    public void goToEventPage(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Evenement.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to navigate to Event page: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
 }

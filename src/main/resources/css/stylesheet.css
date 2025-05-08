@@ -1,0 +1,28 @@
+/* Style de la sidebar */
+.sidebar {
+    -fx-background-color: #2262C6;
+    -fx-background-radius: 0px 50px 0px 0px;
+}
+
+/* Style du bouton de la sidebar */
+.labbtn {
+    -fx-text-fill: #2262C6;
+    -fx-background-radius: 50px;
+}
+
+/* Style du bouton sans fond, avec un texte spécifique */
+.sidebar-btn {
+    -fx-background-color: transparent; /* Pas de fond */
+    -fx-border-color: transparent; /* Pas de bordure */
+    -fx-background-radius: 50px; /* Bord arrondi */
+}
+
+/* Style du texte du bouton */
+.sidebar-btn-text {
+    -fx-text-fill: #A2BEE8; /* Texte bleu clair */
+}
+
+/* Changer la couleur du texte lors du survol */
+.sidebar-btn:hover .sidebar-btn-text {
+    -fx-text-fill: #7AA2E7; /* Texte bleu plus foncé au survol */
+}

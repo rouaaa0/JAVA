@@ -1,0 +1,827 @@
+/* modern-chat.css - CSS complet pour une interface de chat professionnelle */
+
+/* ===== VARIABLES GLOBALES ===== */
+* {
+    -fx-primary-color: #1e88e5;
+    -fx-primary-light: #6ab7ff;
+    -fx-primary-dark: #005cb2;
+
+    -fx-secondary-color: #26a69a;
+    -fx-secondary-light: #64d8cb;
+    -fx-secondary-dark: #00766c;
+
+    -fx-light-gray: #f5f5f5;
+    -fx-medium-gray: #e0e0e0;
+    -fx-dark-gray: #757575;
+
+    -fx-background-light: white;
+    -fx-text-primary: #212121;
+    -fx-text-secondary: #757575;
+    -fx-text-light: white;
+    -fx-text-accent: #1e88e5;
+
+    -fx-shadow-color: rgba(0, 0, 0, 0.15);
+    -fx-card-radius: 12px;
+    -fx-button-radius: 20px;
+}
+
+/* ===== STYLES GÉNÉRAUX ===== */
+.main-container {
+    -fx-background-color: -fx-light-gray;
+}
+
+.title-bar {
+    -fx-background-color: -fx-primary-color;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 5, 0, 0, 2);
+    -fx-padding: 8px 15px;
+    -fx-alignment: center-left;
+}
+
+.title-content {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.logo-image {
+    -fx-fit-height: 28;
+    -fx-fit-width: 28;
+    -fx-preserve-ratio: true;
+}
+
+.title-text {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-light;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+.window-controls {
+    -fx-spacing: 5;
+}
+
+.window-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-light;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 3px 8px;
+    -fx-background-radius: 3px;
+}
+
+.window-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+.close-button:hover {
+    -fx-background-color: #e53935;
+}
+
+/* ===== STATUT ET EN-TÊTE ===== */
+.status-bar {
+    -fx-padding: 10px 15px;
+    -fx-background-color: -fx-background-light;
+    -fx-border-color: transparent transparent -fx-medium-gray transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-alignment: center-left;
+    -fx-spacing: 10;
+}
+
+.status-indicator {
+    -fx-fill: #4caf50;
+    -fx-stroke: white;
+    -fx-stroke-width: 1;
+}
+
+.status-online {
+    -fx-fill: #4caf50;
+}
+
+.status-offline {
+    -fx-fill: #9e9e9e;
+}
+
+.status-away {
+    -fx-fill: #ff9800;
+}
+
+.status-text {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-size: 13px;
+}
+
+.participants-counter {
+    -fx-text-fill: -fx-dark-gray;
+    -fx-font-size: 12px;
+    -fx-padding: 0 0 0 15;
+}
+
+/* ===== LISTE DES MESSAGES ===== */
+.messages-container {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.message-list-container {
+    -fx-padding: 0;
+    -fx-background-color: -fx-background-light;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 3, 0, 0, 0);
+    -fx-background-radius: 0;
+}
+
+.message-list {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+.message-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5 10;
+}
+
+.message-list .list-cell:filled:selected {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+}
+
+.message-list .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+}
+
+.message-list .scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-medium-gray;
+    -fx-background-radius: 5;
+}
+
+/* ===== BULLES DE MESSAGE ===== */
+.message-bubble {
+    -fx-background-radius: 18;
+    -fx-padding: 10 15;
+    -fx-max-width: 300;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 2, 0, 0, 1);
+}
+
+.message-bubble-sent {
+    -fx-background-color: -fx-primary-color;
+    -fx-border-radius: 18 18 3 18;
+    -fx-background-radius: 18 18 3 18;
+}
+
+.message-bubble-received {
+    -fx-background-color: -fx-light-gray;
+    -fx-border-radius: 18 18 18 3;
+    -fx-background-radius: 18 18 18 3;
+}
+
+.message-bubble-admin {
+    -fx-background-color: -fx-secondary-dark;
+    -fx-border-radius: 18;
+    -fx-background-radius: 18;
+}
+
+.message-content {
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+}
+
+.message-content-sent {
+    -fx-text-fill: -fx-text-light;
+}
+
+.message-content-received {
+    -fx-text-fill: -fx-text-primary;
+}
+
+.message-content-admin {
+    -fx-text-fill: -fx-text-light;
+    -fx-font-weight: bold;
+}
+
+.message-timestamp {
+    -fx-font-size: 10px;
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-padding: 3 0 0 0;
+}
+
+.message-timestamp-received {
+    -fx-text-fill: rgba(0, 0, 0, 0.5);
+}
+
+.sender-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-dark-gray;
+    -fx-padding: 0 0 3 0;
+}
+
+/* ===== PIÈCES JOINTES ===== */
+.attachment-container {
+    -fx-padding: 5 0;
+}
+
+.image-attachment {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 3, 0, 0, 1);
+}
+
+.file-attachment {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 8;
+    -fx-padding: 8 12;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 2, 0, 0, 1);
+}
+
+.file-icon {
+    -fx-fit-height: 24;
+    -fx-fit-width: 24;
+}
+
+.file-name {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-accent;
+}
+
+.file-size {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-text-secondary;
+}
+
+/* ===== ZONE DE SAISIE ET ATTACHEMENTS ===== */
+.input-container {
+    -fx-padding: 10 15 15 15;
+    -fx-background-color: -fx-light-gray;
+}
+
+.message-compose-box {
+    -fx-background-color: -fx-background-light;
+    -fx-background-radius: -fx-button-radius;
+    -fx-padding: 5 10;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 4, 0, 0, 0);
+}
+
+.message-input {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+    -fx-padding: 8 5;
+    -fx-prompt-text-fill: -fx-dark-gray;
+}
+
+.message-input:focused {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.action-buttons {
+    -fx-padding: 0 5 0 0;
+}
+
+.action-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+    -fx-cursor: hand;
+    -fx-background-radius: 100%;
+}
+
+.action-button:hover {
+    -fx-background-color: -fx-medium-gray;
+}
+
+.button-icon {
+    -fx-fit-height: 20;
+    -fx-fit-width: 20;
+    -fx-preserve-ratio: true;
+}
+
+.send-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 100%;
+    -fx-padding: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 2, 0, 0, 0);
+}
+
+.send-button:hover {
+    -fx-background-color: -fx-primary-dark;
+}
+
+.send-icon {
+    -fx-fit-height: 20;
+    -fx-fit-width: 20;
+}
+
+.send-button-animation {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 132, 255, 0.4), 10, 0, 0, 0);
+}
+
+/* ===== PRÉVISUALISATION DES ATTACHEMENTS ===== */
+.attachment-preview {
+    -fx-background-color: rgba(30, 136, 229, 0.1);
+    -fx-background-radius: 10;
+    -fx-padding: 8 12;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.attachment-info {
+    -fx-spacing: 8;
+    -fx-alignment: center-left;
+    -fx-padding: 0;
+    -fx-pref-height: 24;
+}
+
+.attachment-icon {
+    -fx-fit-height: 16;
+    -fx-fit-width: 16;
+}
+
+.attachment-name {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-accent;
+}
+
+.remove-attachment-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #f44336;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 0 0 0 5;
+}
+
+.remove-attachment-button:hover {
+    -fx-text-fill: #d32f2f;
+}
+
+/* ===== OPTIONS DE MESSAGE ===== */
+.message-options {
+    -fx-spacing: 5;
+    -fx-alignment: center-right;
+    -fx-padding: 3 0 0 0;
+}
+
+.message-option-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255, 255, 255, 0.7);
+    -fx-cursor: hand;
+    -fx-padding: 2 5;
+    -fx-font-size: 11px;
+    -fx-background-radius: 3;
+}
+
+.message-option-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-text-fill: white;
+}
+
+.message-option-button-received {
+    -fx-text-fill: rgba(0, 0, 0, 0.5);
+}
+
+.message-option-button-received:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+    -fx-text-fill: black;
+}
+
+/* ===== DRAG AND DROP ===== */
+.drag-over {
+    -fx-border-color: -fx-primary-color;
+    -fx-border-width: 2;
+    -fx-border-style: dashed;
+    -fx-border-radius: 10;
+    -fx-background-color: rgba(33, 150, 243, 0.1);
+}
+
+.drop-overlay {
+    -fx-background-color: rgba(30, 136, 229, 0.7);
+    -fx-background-radius: 0;
+}
+
+.drop-text {
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 3, 0, 0, 0);
+}
+
+.drop-icon {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 0);
+}
+
+/* ===== NOTIFICATIONS ===== */
+.notification {
+    -fx-background-color: -fx-secondary-color;
+    -fx-background-radius: 10;
+    -fx-padding: 10 15;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(three-pass-box, -fx-shadow-color, 5, 0, 0, 2);
+}
+
+.notification-icon {
+    -fx-fill: white;
+    -fx-font-size: 16px;
+}
+
+.notification-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes pulse {
+    0% {-fx-scale-x: 1; -fx-scale-y: 1;}
+    50% {-fx-scale-x: 1.05; -fx-scale-y: 1.05;}
+    100% {-fx-scale-x: 1; -fx-scale-y: 1;}
+}
+
+.pulse-animation {
+    -fx-animation: pulse 0.5s ease-out;
+}
+/* Styles pour les boutons d'action */
+.message-option-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 2 5;
+    -fx-font-size: 11px;
+    -fx-background-radius: 3;
+}
+
+/* Bouton Modifier en vert */
+.edit-button {
+    -fx-text-fill: #4caf50;  /* Vert */
+    -fx-font-weight: bold;
+}
+
+.edit-button:hover {
+    -fx-background-color: rgba(76, 175, 80, 0.1);
+}
+
+/* Bouton Supprimer en rouge */
+.delete-button {
+    -fx-text-fill: #f44336;  /* Rouge */
+    -fx-font-weight: bold;
+}
+
+.delete-button:hover {
+    -fx-background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Styles pour les options du message reçu */
+.message-option-button-received.edit-button {
+    -fx-text-fill: #4caf50;
+}
+
+.message-option-button-received.delete-button {
+    -fx-text-fill: #f44336;
+}
+.emoji-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+    -fx-cursor: hand;
+    -fx-background-radius: 100%;
+}
+
+.emoji-button:hover {
+    -fx-background-color: -fx-medium-gray;
+}
+
+.emoji-picker {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-padding: 5;
+}
+
+.emoji-close-button {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: #333;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 3;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.emoji-close-button:hover {
+    -fx-background-color: #e6e6e6;
+}
+
+.emoji-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.emoji-scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.emoji-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+}
+
+.emoji-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #ddd;
+    -fx-background-radius: 5;
+}
+
+.emoji-scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #ccc;
+}
+
+/* Ajoutez ces styles dans votre fichier CSS existant */
+
+/* Styles pour le bouton d'enregistrement vocal */
+.voice-button {
+    -fx-background-color: #f2f2f2;
+    -fx-background-radius: 50%;
+}
+
+.voice-button:hover {
+    -fx-background-color: #e5e5e5;
+}
+
+.voice-button:pressed {
+    -fx-background-color: #d9d9d9;
+}
+
+.voice-button.recording {
+    -fx-background-color: #ff6b6b;
+}
+
+/* Styles pour la zone d'enregistrement audio */
+.audio-recording-box {
+    -fx-background-color: #fff2f2;
+    -fx-background-radius: 20;
+    -fx-padding: 10;
+    -fx-border-color: #ffd1d1;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.recording-indicator {
+    -fx-fill: #ff0000;
+    -fx-stroke: #ff0000;
+    -fx-stroke-width: 0;
+    -fx-opacity: 1;
+}
+
+.recording-indicator.pulse {
+    -fx-fill: #ff6b6b;
+}
+
+.recording-text {
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff3333;
+}
+
+.recording-time {
+    -fx-font-family: monospace;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ff3333;
+    -fx-font-weight: bold;
+}
+
+.stop-recording-button {
+    -fx-background-color: #ff3333;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50%;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+}
+
+.stop-recording-button:hover {
+    -fx-background-color: #ff0000;
+}
+
+/* Styles pour les messages audio */
+.audio-message {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+}
+
+.audio-message.my-message {
+    -fx-background-color: #e1f5fe;
+    -fx-border-color: #b3e5fc;
+}
+
+.audio-play-button {
+    -fx-background-color: #4caf50;
+    -fx-background-radius: 50%;
+    -fx-text-fill: white;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+}
+
+.audio-play-button:hover {
+    -fx-background-color: #43a047;
+}
+
+.audio-play-button.playing {
+    -fx-background-color: #f44336;
+}
+
+.audio-time {
+    -fx-font-family: monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: #757575;
+}
+
+.audio-progress {
+    -fx-pref-height: 4px;
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 2;
+}
+
+.audio-progress .bar {
+    -fx-background-color: #4caf50;
+    -fx-background-radius: 2;
+}
+
+.audio-progress .track {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 2;
+}
+
+/* Ajustement du style pour que les emojis s'affichent correctement */
+.emoji-picker {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-padding: 5;
+}
+
+.emoji-close-button {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: #333;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 3;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.emoji-close-button:hover {
+    -fx-background-color: #e6e6e6;
+}
+
+.emoji-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.emoji-scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.emoji-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+}
+
+.emoji-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #ddd;
+    -fx-background-radius: 5;
+}
+
+.emoji-scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #ccc;
+}
+/* Styles pour les éléments d'enregistrement vocal */
+
+/* Zone d'enregistrement */
+.recording-box {
+    -fx-background-color: #feedef;
+    -fx-background-radius: 10;
+    -fx-border-color: #ffccd1;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 10 15;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+/* Indicateur d'enregistrement (le cercle rouge qui clignote) */
+.recording-indicator {
+    -fx-fill: #ff3b30;
+}
+
+/* Animation de clignotement pour l'indicateur (sera appliquée par code) */
+.recording-indicator-blink {
+    -fx-fill: rgba(255, 59, 48, 0.5);
+}
+
+/* Étiquette de temps d'enregistrement */
+.recording-time {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+/* Étiquette de statut d'enregistrement */
+.recording-status {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666;
+}
+
+/* Bouton d'arrêt d'enregistrement */
+.stop-recording-button {
+    -fx-background-color: #ff3b30;
+    -fx-text-fill: white;
+    -fx-background-radius: 15;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.stop-recording-button:hover {
+    -fx-background-color: #ff5146;
+}
+
+/* Bouton d'annulation d'enregistrement */
+.cancel-recording-button {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: #666;
+    -fx-background-radius: 15;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.cancel-recording-button:hover {
+    -fx-background-color: #e6e6e6;
+}
+
+/* Bouton d'enregistrement vocal */
+.voice-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.voice-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+    -fx-background-radius: 15;
+}
+
+.voice-button:pressed {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+    -fx-background-radius: 15;
+}
+
+/* Bulle de message audio */
+.audio-message-bubble {
+    -fx-background-color: #0084ff;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-max-width: 250;
+}
+
+.audio-message-bubble .play-button {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 5;
+    -fx-cursor: hand;
+}
+
+.audio-message-bubble .play-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.audio-message-bubble .pause-button {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 5;
+    -fx-cursor: hand;
+}
+
+.audio-message-bubble .audio-duration {
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+
+/* Variante pour les messages audio des autres utilisateurs */
+.audio-message-bubble-other {
+    -fx-background-color: #34c759;
+}
+
+/* Variante pour les messages audio de l'admin */
+.audio-message-bubble-admin {
+    -fx-background-color: #ff3b30;
+}
